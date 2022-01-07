@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basic_quizapp/Question.dart' as q;
-import 'package:flutter_basic_quizapp/answer.dart';
+import 'package:flutter_basic_quizapp/quiz.dart';
+import 'package:flutter_basic_quizapp/result.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,45 +18,65 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var questionIndex = 0;
 
-  void answerQuestion() {
+  final questions = [
+    {
+      "question": "What's your favorite color?",
+      "options": [
+        {"text": "Black", "score": 10},
+        {"text": "Blue", "score": 8},
+        {"text": "Yellow", "score": 4},
+      ]
+    },
+    {
+      "question": "What's your favorite animal?",
+      "options": [
+        {"text": "Dog", "score": 10},
+        {"text": "Cat", "score": 12},
+        {"text": "Cow", "score": 43},
+      ]
+    },
+    {
+      "question": "What's your favorite country?",
+      "options": [
+        {"text": "UK", "score": 41},
+        {"text": "Canada", "score": 12},
+        {"text": "Germany", "score": 43},
+      ]
+    },
+  ];
+
+  int total = 0;
+
+  void answerQuestion(int score) {
     setState(() {
+      total += score;
       // this re renders the ui
       questionIndex += 1;
     });
   }
 
+  void resetQuiz() {
+    setState(() {
+      questionIndex = 0;
+      total = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      {
-        "question": "What's your favorite color?",
-        "options": ["Black", "Blue", "Yellow"]
-      },
-      {
-        "question": "What's your favorite animal?",
-        "options": ["Chicken", "Dog", "Cow", "Elephant"]
-      },
-      {
-        "question": "What's your favorite country?",
-        "options": ["UK", "USA", "India"]
-      },
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("App Title"),
         ),
-        body: Column(
-          children: [
-            q.Question(questions[questionIndex]["question"].toString()),
-
-            // iterating through questions' options and transforming each of them into answer widget
-            // making a list of answer widget
-            ...(questions[questionIndex]["options"] as List<String>).map((e) {
-              return Answer(answerQuestion, e);
-            }).toList()
-          ],
-        ),
+        body: questionIndex < questions.length
+            ? Quiz(
+                questions: questions,
+                currentIndex: questionIndex,
+                answerQuestion:
+                    answerQuestion, // passing the address of the function
+              )
+            : Result(total, resetQuiz),
       ),
     );
   }

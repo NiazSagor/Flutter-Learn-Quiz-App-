@@ -16,6 +16,7 @@ class Answer extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: selectListener,
+        // triggers the selectListener function provided from quiz.dart
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
         ),
