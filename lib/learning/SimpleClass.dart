@@ -19,8 +19,15 @@ class SimpleClass {
 // @required annotation means that the argument is necessary
 // SimpleClass({String? name, int? age = 90}) {}
 
+// different constructor
+  // classA is like a surname
+  // main name is same as the class name
+  // by adding . we can make variations of constructor
+  SimpleClass.classA(this.name);
 }
 
 void main() {
-  var some = SimpleClass(name: "Somename");
+  var some = SimpleClass(name: "Somename"); // calling the default constructor
+  var someClassA =
+      SimpleClass.classA("some class A"); // calling a different constructor
 }

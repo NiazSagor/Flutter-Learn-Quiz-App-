@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic_quizapp/Question.dart' as q;
+import 'package:flutter_basic_quizapp/answer.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,8 +28,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      "What's your favorite color?",
-      "What's your favorite animal?"
+      {
+        "question": "What's your favorite color?",
+        "options": ["Black", "Blue", "Yellow"]
+      },
+      {
+        "question": "What's your favorite animal?",
+        "options": ["Chicken", "Dog", "Cow", "Elephant"]
+      },
+      {
+        "question": "What's your favorite country?",
+        "options": ["UK", "USA", "India"]
+      },
     ];
     return MaterialApp(
       home: Scaffold(
@@ -37,14 +48,13 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            q.Question(questions[questionIndex]),
-            ElevatedButton(onPressed: answerQuestion, child: Text("Answer 1")),
-            // answerQuestion only executes the function, does not expect any return value
-            ElevatedButton(onPressed: answerQuestion, child: Text("Answer 2")),
-            ElevatedButton(
-                onPressed: () => print("Answer 3 chosen"),
-                child: Text("Answer 3"))
-            // anonymous function
+            q.Question(questions[questionIndex]["question"].toString()),
+
+            // iterating through questions' options and transforming each of them into answer widget
+            // making a list of answer widget
+            ...(questions[questionIndex]["options"] as List<String>).map((e) {
+              return Answer(answerQuestion, e);
+            }).toList()
           ],
         ),
       ),
